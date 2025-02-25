@@ -10,8 +10,9 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-app.use("/", (req, res) => {
-  res.send("hello world");
-});
+const userRouter = require("./routes/userRouter");
+
+app.use(express.json());
+app.use("/api/v1/user", userRouter);
 
 module.exports = app;
