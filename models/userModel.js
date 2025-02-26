@@ -30,11 +30,11 @@ const userSchema = new mongoose.Schema({
       message: "Password fo not match",
     },
   },
-  admin: {
+  isAdmin: {
     type: Boolean,
     default: false,
   },
-  active: {
+  isActive: {
     type: Boolean,
     default: true,
     select: false,
@@ -54,7 +54,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.method.correctPassword = async function (
+userSchema.methods.correctPassword = async function (
   candidatePassword,
   userPassword
 ) {
