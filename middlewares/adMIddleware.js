@@ -29,13 +29,5 @@ exports.validate = async (req, res, next) => {
     });
   }
 
-  const findCategory = await Category.findById(category);
-  if (!findCategory) {
-    return res.status(400).json({
-      status: "fail",
-      message: "Category ID is invalid",
-    });
-  }
-
   next();
 };

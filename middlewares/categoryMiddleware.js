@@ -31,3 +31,34 @@ exports.validate = async (req, res, next) => {
 
   next();
 };
+
+exports.validateCategory = async (req, res, next) => {
+  const { category } = req.body;
+
+  if (category) {
+    if (!mongoose.Types.ObjectId.isValid(category)) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Category ID format is invalid",
+      });
+    }
+
+    try {
+      const findCategory = await Category.findById(category);
+
+      if (!findCategory) {
+        return res.status(400).json({
+          status: "fail",
+          message: "Category ID is invalid",
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        status: "fail",
+        message: "Error validating category",
+      });
+    }
+  }
+
+  next();
+};
