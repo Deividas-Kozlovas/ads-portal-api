@@ -48,3 +48,25 @@ exports.validateLogin = (req, res, next) => {
 
   next();
 };
+
+exports.validateIfAdmin = (req, res, next) => {
+  if (!req.user || !req.user.isAdmin) {
+    return res.status(403).json({
+      status: "fail",
+      message: "Data is for admin only",
+    });
+  }
+
+  next();
+};
+
+exports.validateIfloggedIn = (req, res, next) => {
+  if (!req.user) {
+    return res.status(400).json({
+      status: "fail",
+      message: "User is not authenticated",
+    });
+  }
+
+  next();
+};
