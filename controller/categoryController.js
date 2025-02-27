@@ -44,7 +44,7 @@ exports.getAllCategories = async (req, res) => {
 
 exports.getCategory = async (req, res) => {
   try {
-    const category = await Category.findById(req.params);
+    const category = await Category.findById(req.params.id);
     if (!category) {
       return res.status(404).json({
         status: "fail",
@@ -67,7 +67,6 @@ exports.getCategory = async (req, res) => {
 exports.deleteCategory = async (req, res) => {
   try {
     const category = await Category.findById(req.params.id);
-
     if (!category) {
       return res.status(404).json({
         status: "fail",
