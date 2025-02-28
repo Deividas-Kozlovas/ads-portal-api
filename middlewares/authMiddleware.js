@@ -1,5 +1,7 @@
+const { default: mongoose } = require("mongoose");
 const validator = require("validator");
 const User = require("../models/userModel");
+const { status } = require("init");
 
 exports.validateRegister = async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;
@@ -65,6 +67,27 @@ exports.validateIfloggedIn = (req, res, next) => {
     return res.status(400).json({
       status: "fail",
       message: "User is not authenticated",
+    });
+  }
+
+  next();
+};
+
+exports.validateBodyId = async (req, res, next) => {
+  const { user } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(user)) {
+    return res.status(400).json({
+      status: "fail",
+      message: "User ID format is invalid",
+    });
+  }
+
+  const userExist = await User.findById(user);
+  if (!userExist) {
+    return res.status(404).json({
+      status: "fail",
+      message: "User not found",
     });
   }
 

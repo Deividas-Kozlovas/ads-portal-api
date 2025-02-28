@@ -1,7 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const Ad = require("../models/adsModel");
 
-exports.validateId = async (req, res, next, val) => {
+exports.validateParamId = async (req, res, next, val) => {
   if (!mongoose.Types.ObjectId.isValid(val)) {
     return res.status(400).json({
       status: "fail",
@@ -16,6 +16,27 @@ exports.validateId = async (req, res, next, val) => {
       message: "Ad ID is invalid",
     });
   }
+  next();
+};
+
+exports.validateBodyId = async (req, res, next) => {
+  const { ad } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(ad)) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Ad ID format is invalid in body",
+    });
+  }
+
+  const adExists = await Ad.findById(ad);
+  if (!adExists) {
+    return res.status(404).json({
+      status: "fail",
+      message: "Ad not found",
+    });
+  }
+
   next();
 };
 

@@ -47,7 +47,10 @@ exports.updateAd = async (req, res) => {
 
 exports.getAllAds = async (req, res) => {
   try {
-    const ads = await Ad.find();
+    const ads = await Ad.find().populate({
+      path: "likes",
+      select: "isLiked ad user",
+    });
 
     if (!ads || ads.length === 0) {
       return res.status(200).json({
@@ -65,6 +68,7 @@ exports.getAllAds = async (req, res) => {
     return res.status(500).json({
       status: "fail",
       message: "Something went wrong fetching ads",
+      error: err.message,
     });
   }
 };

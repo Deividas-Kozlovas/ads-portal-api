@@ -4,7 +4,7 @@ const adsController = require("../controller/adsController");
 const adMiddleware = require("../middlewares/adMIddleware");
 const categoryMiddleware = require("../middlewares/categoryMiddleware");
 
-router.param("id", adMiddleware.validateId);
+router.param("id", adMiddleware.validateParamId);
 
 router
   .route("/")

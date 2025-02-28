@@ -28,6 +28,12 @@ const adsSchema = new mongoose.Schema(
       ref: "Category",
       required: [true, "Category is required"],
     },
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "LikeAd",
+      },
+    ],
   },
   {
     timestamps: true,
