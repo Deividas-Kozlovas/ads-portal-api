@@ -47,9 +47,12 @@ exports.updateAd = async (req, res) => {
 
 exports.getAllAds = async (req, res) => {
   try {
+    const userId = req.user._id;
+
     const ads = await Ad.find().populate({
       path: "likes",
       select: "isLiked ad user",
+      match: { user: userId, isLiked: true },
     });
 
     if (!ads || ads.length === 0) {

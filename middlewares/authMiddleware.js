@@ -1,7 +1,38 @@
 const { default: mongoose } = require("mongoose");
 const validator = require("validator");
 const User = require("../models/userModel");
-const { status } = require("init");
+const jwt = require("jsonwebtoken");
+
+exports.protect = async (req, res, next) => {
+  try {
+    const token =
+      req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+    if (!token) {
+      return res
+        .status(401)
+        .json({ status: "fail", message: "Not logged in!" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Replace with your JWT secret
+
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      return res
+        .status(401)
+        .json({ status: "fail", message: "User not found!" });
+    }
+
+    req.user = user;
+    next();
+  } catch (err) {
+    return res.status(401).json({
+      status: "fail",
+      message: "Authentication failed!",
+      error: err.message,
+    });
+  }
+};
 
 exports.validateRegister = async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;

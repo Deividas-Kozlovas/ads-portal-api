@@ -15,7 +15,6 @@ exports.likeAd = async (req, res) => {
 
       await like.save();
 
-      // 🔥 Push like to Ad model
       await Ad.findByIdAndUpdate(ad, {
         $push: { likes: like._id },
       });
@@ -30,7 +29,6 @@ exports.likeAd = async (req, res) => {
         like.isLiked = false;
         await like.save();
 
-        // 🔥 Remove like from Ad model
         await Ad.findByIdAndUpdate(ad, {
           $pull: { likes: like._id },
         });
@@ -43,7 +41,6 @@ exports.likeAd = async (req, res) => {
         like.isLiked = true;
         await like.save();
 
-        // Push again if like is toggled
         await Ad.findByIdAndUpdate(ad, {
           $push: { likes: like._id },
         });

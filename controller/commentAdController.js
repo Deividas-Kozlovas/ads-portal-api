@@ -17,7 +17,7 @@ exports.createAdComment = async (req, res) => {
 
 exports.getAllCommentsForAd = async (req, res) => {
   try {
-    const { ad } = req.body;
+    const ad = req.params.a;
     const allAdComments = await find({ ad });
     if (!allAdComments || allAdComments === 0) {
       return res.status(400).json({

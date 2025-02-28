@@ -3,12 +3,13 @@ const router = express.Router();
 const adsController = require("../controller/adsController");
 const adMiddleware = require("../middlewares/adMIddleware");
 const categoryMiddleware = require("../middlewares/categoryMiddleware");
+const authMiddleware = require("../middlewares/authMiddleware");
 
 router.param("id", adMiddleware.validateParamId);
 
 router
   .route("/")
-  .get(adsController.getAllAds)
+  .get(authMiddleware.protect, adsController.getAllAds)
   .post(
     adMiddleware.validate,
     categoryMiddleware.validateCategory,
